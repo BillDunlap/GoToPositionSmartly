@@ -28,7 +28,7 @@ public class BrushlessGoToPositionSmartly extends Command {
   @Override
   public void initialize() {
     // we could reset to factory defaults and set pid coefs here
-    m_motor.setSmartMotionCoefficients(m_desiredPosition, m_maxVelocity, m_minVelocity, m_maxAcceleration, m_allowedClosedLoopError);
+    m_motor.doSmartMotion(m_desiredPosition, m_maxVelocity, m_minVelocity, m_maxAcceleration, m_allowedClosedLoopError);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -89,6 +90,10 @@ public class SparkMaxBrushless extends SubsystemBase {
   public void setPercentSpeed(double percent){
     m_CANSparkMax.set(percent);
   }
+  public void setRPM(double rpm){
+    double encoderRpm = rpm * m_encoderRotationsPerFinalRotation;
+    m_SparkPIDController.setReference(encoderRpm, ControlType.kVelocity);
+  }
   // We use encoder-centric PID parameters so we can copy them from test/tuning program
   public void setPIDCoefficients(double kP, double kI, double kD, double kIZone,
     double kFeedForward, double kMinOutput, double kMaxOutput) {
@@ -101,7 +106,7 @@ public class SparkMaxBrushless extends SubsystemBase {
     }
 
   // Here we use position, velocities, and acceleration from point of view of thing being rotated.  Time unit is minute. 
-  public void setSmartMotionCoefficients(double desiredPosition, double maxVelocity, double minVelocity,
+  public void doSmartMotion(double desiredPosition, double maxVelocity, double minVelocity,
     double maxAcceleration, double allowedClosedLoopError){
       m_desiredPosition = desiredPosition;
       m_SparkPIDController.setSmartMotionMaxVelocity(maxVelocity * m_encoderRotationsPerFinalRotation, m_SmartMotionSlot);
@@ -111,5 +116,11 @@ public class SparkMaxBrushless extends SubsystemBase {
       double desiredEncoderPosition = m_desiredPosition * m_encoderRotationsPerFinalRotation + m_initialEncoderPosition;
       System.out.println("Going from encoder position " + df2.format(m_RelativeEncoder.getPosition()) + " to " + df2.format(desiredEncoderPosition));
       m_SparkPIDController.setReference(desiredEncoderPosition, CANSparkMax.ControlType.kSmartMotion);
+    }
+
+    public void holdCurrentPosition(){
+      // TODO: Use raw (not "smart motion") position control.  Must use different set of PID values.
+      // Should we use "slots": one for velocity and one for position? 
+      // Also, we may want to use more intelligent feedforward (depending on angle of arm) while holding.
     }
 }
