@@ -32,20 +32,20 @@ public final class Constants {
   public static class ShooterPID {
     public static final double encoderRotationsPerFinalRotation = 1.0;
     // velocity PID values
-    public static final double kP = 0.000080;
+    public static final double kP = 0.000100;
     public static final double kI = 0.000000;
     public static final double kD = 0.000000;
-    public static final double kFeedForward = 0.000170;
+    public static final double kFeedForward = 0.000170 * 1.07;
     public static final double kIZone = 0.000000;
     public static final double kMinOutput = -1.0;
     public static final double kMaxOutput = +1.0;
   }
   public static class LeftShooterMotor{
-    public static final int canId = 12;
+    public static final int canId = 11;
     public static final String name = "Left Shooter";
   }
   public static class RightShooterMotor{
-    public static final int canId = 11;
+    public static final int canId = 53;
     public static final String name = "RightShooter";
   }
 
