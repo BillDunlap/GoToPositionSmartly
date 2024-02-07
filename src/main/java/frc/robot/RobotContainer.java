@@ -27,8 +27,12 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SparkMaxBrushless m_testBrushless = null; // new SparkMaxBrushless(Constants.TestBrushless.canId, Constants.TestBrushless.encoderRotationsPerFinalRotation, Constants.TestBrushless.name);
   private final SparkMaxBrushless m_lefttMotor = new SparkMaxBrushless(Constants.LeftShooterMotor.canId, 1.0, "Left Shooter");
-  private final SparkMaxBrushless m_rightMotor = new SparkMaxBrushless(Constants.RightShooterMotor.canId, 1.0, "Right Shooter");
+  private final SparkMaxBrushless m_rightMotor = new SparkMaxBrushless(Constants.RightShooterMotor.canId, 1.0, Constants.RightShooterMotor.name);
+  private final SparkMaxBrushless m_leftKickerMotor = new SparkMaxBrushless(Constants.LeftShooterKickerMotor.canId, Constants.ShooterKickerPID.encoderRotationsPerFinalRotation, Constants.LeftShooterKickerMotor.name);
+  private final SparkMaxBrushless m_rightKickerMotor = new SparkMaxBrushless(Constants.RightShooterKickerMotor.canId, Constants.ShooterKickerPID.encoderRotationsPerFinalRotation, Constants.RightShooterKickerMotor.name);
+  //TODO: make class for main and kicker shooter motors together
   private final Shooter m_Shooter = new Shooter(m_lefttMotor, m_rightMotor);
+  private final Shooter m_Kicker = new Shooter(m_leftKickerMotor, m_rightKickerMotor);
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final XboxController m_driverController =
       new XboxController(Constants.Operator.kDriverControllerPort);
@@ -64,9 +68,30 @@ public class RobotContainer {
                                          Constants.ShooterPID.kMaxOutput);
 
     }
+    if (m_leftKickerMotor != null) {
+         m_leftKickerMotor.setPIDCoefficients(Constants.ShooterKickerPID.kP,
+                                         Constants.ShooterKickerPID.kI, 
+                                         Constants.ShooterKickerPID.kD,
+                                         Constants.ShooterKickerPID.kIZone, 
+                                         Constants.ShooterKickerPID.kFeedForward,
+                                         Constants.ShooterKickerPID.kMinOutput,
+                                         Constants.ShooterKickerPID.kMaxOutput);
+
+    }
+    if (m_rightKickerMotor != null) {
+         m_rightKickerMotor.setPIDCoefficients(Constants.ShooterKickerPID.kP,
+                                         Constants.ShooterKickerPID.kI, 
+                                         Constants.ShooterKickerPID.kD,
+                                         Constants.ShooterKickerPID.kIZone, 
+                                         Constants.ShooterKickerPID.kFeedForward,
+                                         Constants.ShooterKickerPID.kMinOutput,
+                                         Constants.ShooterKickerPID.kMaxOutput);
+
+    }
     // Configure the trigger bindings
     configureBindings();
-    m_Shooter.setDefaultCommand(new ShooterDefaultCommand(m_Shooter, m_driverController));
+    // m_Shooter.setDefaultCommand(new ShooterDefaultCommand(m_Shooter, m_driverController));
+    m_Kicker.setDefaultCommand(new ShooterDefaultCommand(m_Kicker, m_driverController));
   }
 
   /**

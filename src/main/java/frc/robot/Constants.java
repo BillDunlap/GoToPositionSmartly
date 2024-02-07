@@ -39,6 +39,17 @@ public final class Constants {
     public static final double kIZone = 0.000000;
     public static final double kMinOutput = -1.0;
     public static final double kMaxOutput = +1.0;
+  }  
+  public static class ShooterKickerPID {
+    public static final double encoderRotationsPerFinalRotation = 10.0;
+    // velocity PID values
+    public static final double kP = 0.000050;
+    public static final double kI = 0.000000;
+    public static final double kD = 0.001000;
+    public static final double kFeedForward = 0.000088;
+    public static final double kIZone = 0.000000;
+    public static final double kMinOutput = -1.0;
+    public static final double kMaxOutput = +1.0;
   }
   public static class LeftShooterMotor{
     public static final int canId = 11;
@@ -48,5 +59,12 @@ public final class Constants {
     public static final int canId = 53;
     public static final String name = "RightShooter";
   }
-
+  public static class LeftShooterKickerMotor {
+    public static final int canId = 58;
+    public static final String name = "Left Kicker";
+  }
+  public static class RightShooterKickerMotor {
+    public static final int canId = 57;
+    public static final String name = "Right Kicker";
+  }
 }
